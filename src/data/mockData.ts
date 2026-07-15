@@ -179,6 +179,6 @@ export const faqs = [
   },
   {
     q: "How much does a website cost?",
-    a: "Our bespoke design and code agreements range from $2,500 for sleek landing pages to $15,000+ for dense enterprise software applications and portals. Every quote is fully detailed and non-binding."
+    a: "Our bespoke design and code agreements range from ₹2,50,000 for sleek landing pages to ₹15,00,000+ for dense enterprise software applications and portals. Every quote is fully detailed and non-binding."
   }
 ];

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart3, MessageSquare, Briefcase, FileText, Settings, Kanban, Plus, Trash2, 
-  Check, CheckSquare, Eye, Mail, Phone, Calendar, AlertCircle, Save, DollarSign,
+  Check, CheckSquare, Eye, Mail, Phone, Calendar, AlertCircle, Save, IndianRupee,
   TrendingUp, Users, Award, ShieldAlert, CheckCircle2, ChevronRight
 } from 'lucide-react';
 import { Project, BlogPost, Lead, Task } from '../types';
@@ -196,10 +196,10 @@ export default function AdminDashboard({
   // Calculate Pipeline budget volume
   const getPipelineValue = () => {
     return leads.reduce((acc, l) => {
-      if (l.budget.includes("25,000")) return acc + 20000;
-      if (l.budget.includes("10,000")) return acc + 7500;
-      if (l.budget.includes("5,000")) return acc + 4000;
-      return acc + 2500;
+      if (l.budget.includes("20,00,000")) return acc + 1600000;
+      if (l.budget.includes("12,00,000")) return acc + 1000000;
+      if (l.budget.includes("8,00,000")) return acc + 600000;
+      return acc + 300000;
     }, 0);
   };
 
@@ -321,10 +321,10 @@ export default function AdminDashboard({
                 <div className="bg-white p-5 rounded-2xl border border-solid border-gray-100  shadow-sm">
                   <div className="flex justify-between items-center text-black mb-2">
                     <span className="text-[10px] font-bold uppercase tracking-wider">Est. Pipeline Value</span>
-                    <DollarSign className="w-4 h-4 text-[#D4AF37]" />
+                    <IndianRupee className="w-4 h-4 text-[#D4AF37]" />
                   </div>
                   <h3 className="text-xl font-playfair font-bold text-[#B89B5E]">
-                    ${getPipelineValue().toLocaleString()}
+                    ₹{getPipelineValue().toLocaleString()}
                   </h3>
                   <p className="text-[10px] text-green-500 mt-1 flex items-center gap-1 font-medium">
                     <TrendingUp className="w-3 h-3" /> Qualified active deals
@@ -537,7 +537,7 @@ export default function AdminDashboard({
                         </div>
                         <div className="space-y-1.5 col-span-1 pt-2 sm:pt-0">
                           <p className="flex items-center gap-2 text-black">
-                            <DollarSign className="w-3.5 h-3.5" /> Declared Budget
+                            <IndianRupee className="w-3.5 h-3.5" /> Declared Budget
                           </p>
                           <p className="font-bold text-[#D4AF37] text-[13px]">{selectedLead.budget}</p>
                         </div>

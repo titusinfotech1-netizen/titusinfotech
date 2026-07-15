@@ -22,7 +22,7 @@ async function startServer() {
       email: "sophia@lorenz-atelier.com",
       phone: "+1 (555) 342-9182",
       company: "Lorenz Atelier (Luxury Fashion)",
-      budget: "$15,000 - $25,000",
+      budget: "₹12,00,000 - ₹20,00,000",
       message: "We need an ultra-modern e-commerce portfolio for our luxury boutique. Our goal is to launch next season with a focus on immersive WebGL transitions and minimalist typography.",
       status: "unread",
       date: "2026-07-08T14:30:00Z"
@@ -33,7 +33,7 @@ async function startServer() {
       email: "vance@elevate-capital.co",
       phone: "+44 20 7946 0192",
       company: "Elevate Capital Group",
-      budget: "$5,000 - $10,000",
+      budget: "₹4,00,000 - ₹8,00,000",
       message: "We are seeking a website redesign. Our current site feels dated and doesn't represent our high-end fintech advisory services. Mobile response and high speed are absolute key.",
       status: "read",
       date: "2026-07-07T09:15:00Z"
@@ -135,7 +135,7 @@ Tone Guidelines:
 - luxurious, highly professional, polite, elegant, brief, yet descriptive.
 - Do not use generic chatbot introductory clutter ("Hope you are having a nice day!"). Get straight to the sophisticated answer.
 - Always refer to Titus Infotech as "we" or "our agency".
-- Feel free to suggest budget ranges if asked (Simple high-end landing page: $2,500 - $4,000, Full business portal/E-commerce: $5,000 - $12,000, Large-scale bespoke application: $15,000+).
+- Feel free to suggest budget ranges if asked (Simple high-end landing page: ₹2,00,000 - ₹4,00,000, Full business portal/E-commerce: ₹4,00,000 - ₹10,00,000, Large-scale bespoke application: ₹12,00,000+).
 
 Respond elegantly in polished Markdown format.
 `;

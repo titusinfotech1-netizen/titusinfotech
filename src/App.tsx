@@ -9,6 +9,7 @@ import {
 // Shared types and initial data
 import { Project, BlogPost, Lead } from './types';
 import { initialProjects, initialBlogPosts, testimonials, faqs } from './data/mockData';
+import { servicesData, ServiceDetail } from './data/servicesData';
 
 // Custom Subcomponents
 import AdminDashboard from './components/AdminDashboard';
@@ -21,6 +22,19 @@ import whatsappLogo from './assets/images/whatsapp_logo_1784133431023.jpg';
 export default function App() {
  const [isDarkMode, setIsDarkMode] = useState(false);
  const [view, setView] = useState<'contact' | 'thankyou'>('contact');
+  const [selectedService, setSelectedService] = useState<string | null>(null);
+
+  const handleServiceConsultation = (serviceTitle: string) => {
+    setContactForm(prev => ({
+      ...prev,
+      message: `I am interested in the "${serviceTitle}" service. Please provide further consultation regarding design options, specifications, and a precise quote.`
+    }));
+    setSelectedService(null);
+    setView('contact');
+    setTimeout(() => {
+      document.getElementById('contact-form-section')?.scrollIntoView({ behavior: 'smooth' });
+    }, 150);
+  };
 
  // Active lead submitted for WhatsApp link
  const [lastLead, setLastLead] = useState<{
@@ -57,7 +71,7 @@ export default function App() {
 
  // Contact form submission state
  const [contactForm, setContactForm] = useState({
- name: "", email: "", phone: "", company: "", budget: "$5,000 - $10,000", message: ""
+ name: "", email: "", phone: "", company: "", budget: "₹4,00,000 - ₹8,00,000", message: ""
  });
  const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -135,7 +149,7 @@ export default function App() {
 
  // Reset form
  setContactForm({
- name: "", email: "", phone: "", company: "", budget: "$5,000 - $10,000", message: ""
+ name: "", email: "", phone: "", company: "", budget: "₹4,00,000 - ₹8,00,000", message: ""
  });
  // Route to custom Thank You Page view
  setView('thankyou');
@@ -179,6 +193,7 @@ export default function App() {
 
  // Simple Scroll trigger navigation handler
  const navigateTo = (targetView: typeof view) => {
+    setSelectedService(null);
  setView(targetView);
  setMobileMenuOpen(false);
  window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -199,6 +214,17 @@ export default function App() {
  { name: "GitHub", icon: "🐙" },
  { name: "TypeScript", icon: "📘" }
  ];
+
+  const getServiceIcon = (id: string) => {
+    switch (id) {
+      case 'website': return <Monitor className="w-5 h-5" />;
+      case 'app': return <Smartphone className="w-5 h-5" />;
+      case 'logo': return <PenTool className="w-5 h-5" />;
+      case 'music': return <Music className="w-5 h-5" />;
+      case 'editing': return <Camera className="w-5 h-5" />;
+      default: return <Monitor className="w-5 h-5" />;
+    }
+  };
 
  return (
  <div className={`${isDarkMode ? 'dark' : ''} transition-colors duration-300 min-h-screen flex flex-col font-playfair`}>
@@ -324,7 +350,169 @@ export default function App() {
  <main className="flex-1">
 {/* VIEW: CONTACT */}
  {view === 'contact' && (
- <div className="animate-fade-in-up">
+  <div className="animate-fade-in-up">
+    {selectedService ? (
+      (() => {
+        const service = servicesData.find(s => s.id === selectedService);
+        if (!service) return null;
+        return (
+          <div className="max-w-6xl mx-auto px-4 py-12 md:py-16 space-y-12 animate-fade-in-up">
+            {/* Back Navigation Bar */}
+            <div className="flex items-center justify-between border-b border-solid border-gray-100 pb-6">
+              <button 
+                onClick={() => setSelectedService(null)}
+                className="inline-flex items-center gap-2 text-black hover:text-[#B89B5E] font-playfair font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4 text-[#D4AF37]" /> Back to Services
+              </button>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#D4AF37]"></span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Bespoke Specs</span>
+              </div>
+            </div>
+
+            {/* Main Header / Title */}
+            <div className="space-y-4 text-center md:text-left">
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#D4AF37]">Detailed Capabilities Overview</span>
+              <h1 className="font-playfair font-black text-3xl sm:text-4xl md:text-5xl text-black leading-tight">
+                {service.title}
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-500 font-medium max-w-2xl">
+                {service.desc}
+              </p>
+            </div>
+
+            {/* Split Grid Content */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+              
+              {/* Left Column: Cover Image & Value Card */}
+              <div className="lg:col-span-5 space-y-6">
+                <div className="aspect-video sm:aspect-[4/3] rounded-3xl overflow-hidden border border-solid border-[#D4AF37]/35 shadow-lg relative">
+                  <img 
+                    src={service.image} 
+                    alt={service.title} 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+                  <div className="absolute bottom-5 left-6 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white text-[#D4AF37] flex items-center justify-center border border-solid border-[#D4AF37]/30 shadow">
+                      {getServiceIcon(service.id)}
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-gray-300 font-bold uppercase tracking-wider">Service Category</p>
+                      <p className="text-xs text-white font-extrabold uppercase tracking-widest">{service.title}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Interactive Pricing Card */}
+                <div className="bg-gradient-to-br from-[#FAF6EE] via-white to-[#FCF9F2] border border-solid border-[#D4AF37]/35 rounded-3xl p-6 md:p-8 shadow-xl shadow-[#D4AF37]/5 space-y-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#D4AF37]/5 rounded-full blur-xl pointer-events-none"></div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest block">Premium Valuation</span>
+                    <h3 className="font-playfair font-black text-2xl text-black">
+                      {service.price}
+                    </h3>
+                    <p className="text-[10px] text-gray-500 font-medium leading-relaxed">
+                      {service.priceDetail}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-dashed border-[#D4AF37]/30 space-y-4">
+                    <button 
+                      onClick={() => handleServiceConsultation(service.title)}
+                      className="w-full bg-[#D4AF37] hover:bg-[#B89B5E] text-black font-playfair font-bold py-3.5 rounded-xl uppercase tracking-wider text-[10px] shadow-lg transition-all active:scale-[0.97] cursor-pointer text-center flex items-center justify-center gap-2"
+                    >
+                      Consult on this Service <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                    <button 
+                      onClick={() => setSelectedService(null)}
+                      className="w-full bg-white hover:bg-gray-50 text-[#B89B5E] border border-solid border-[#D4AF37]/30 font-playfair font-bold py-3 text-[10px] rounded-xl uppercase tracking-widest transition-colors cursor-pointer text-center"
+                    >
+                      Return to Main Page
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Descriptions & Details */}
+              <div className="lg:col-span-7 space-y-8">
+                
+                {/* Long detailed description */}
+                <div className="space-y-4">
+                  <h3 className="font-playfair font-black text-lg text-[#B89B5E] uppercase tracking-wider">Craft Architecture & Mission</h3>
+                  <p className="text-xs text-black leading-relaxed font-medium">
+                    {service.details}
+                  </p>
+                </div>
+
+                {/* Key Advantages / Benefits */}
+                <div className="space-y-4">
+                  <h3 className="font-playfair font-black text-sm text-black uppercase tracking-wider">Key Strategic Advantages</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {service.benefits.map((benefit, i) => (
+                      <div key={i} className="flex items-start gap-3 bg-gray-50/50 p-3.5 rounded-2xl border border-solid border-gray-100">
+                        <Check className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
+                        <p className="text-[11px] text-black leading-relaxed font-semibold">{benefit}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Technical Deliverables / Specs */}
+                <div className="space-y-4">
+                  <h3 className="font-playfair font-black text-sm text-black uppercase tracking-wider">Technical Specifications</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    {service.specs.map((spec, i) => (
+                      <div key={i} className="flex items-center gap-2.5 bg-white border border-solid border-gray-100 px-4 py-3 rounded-xl shadow-sm">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shrink-0"></span>
+                        <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wide">{spec}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Development Process Timeline */}
+            <div className="pt-8 border-t border-solid border-gray-100">
+              <div className="text-center max-w-xl mx-auto space-y-2 mb-10">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-[#D4AF37]">Our Blueprint</span>
+                <h3 className="font-playfair font-black text-xl text-black uppercase tracking-wider">The Professional Process</h3>
+                <p className="text-[11px] text-gray-500">Every project goes through precise phases to guarantee luxury-grade outputs.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {service.process.map((step, i) => (
+                  <div key={i} className="bg-[#FAF8F5]/60 border border-solid border-gray-100 p-6 rounded-2xl relative shadow-sm hover:border-[#D4AF37]/35 transition-colors">
+                    <span className="absolute top-4 right-5 font-playfair font-black text-3xl text-[#D4AF37]/25">{step.step}</span>
+                    <h4 className="font-playfair font-extrabold text-sm text-black mb-2 uppercase tracking-wide">{step.title}</h4>
+                    <p className="text-[11px] text-gray-600 leading-relaxed font-medium">{step.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Back Button */}
+            <div className="flex justify-center pt-6">
+              <button 
+                onClick={() => {
+                  setSelectedService(null);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="bg-white hover:bg-gray-50 text-[#B89B5E] border border-solid border-[#D4AF37]/30 font-playfair font-bold text-xs px-8 py-3.5 rounded-full uppercase tracking-wider shadow-sm transition-colors cursor-pointer"
+              >
+                Back to Services Overview
+              </button>
+            </div>
+          </div>
+        );
+      })()
+    ) : (
+      <>
+
    {/* HERO SECTION */}
   <section className="relative pt-24 pb-28 flex flex-col items-center justify-center min-h-[85vh] overflow-hidden px-6">
     <div className="absolute inset-0 bg-gradient-to-b from-[#fefdfb] via-white to-[#fbf9f5] z-[-2]"></div>
@@ -392,62 +580,43 @@ export default function App() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                {[
-                  { 
-                    title: 'Website Creation', 
-                    desc: 'High-performance, luxury web architectures and full-stack solutions tailored for modern businesses.', 
-                    icon: <Monitor className="w-6 h-6" />,
-                    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800'
-                  },
-                  { 
-                    title: 'App Building', 
-                    desc: 'Bespoke iOS and Android mobile applications crafted with high-fidelity performance and native feel.', 
-                    icon: <Smartphone className="w-6 h-6" />,
-                    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800'
-                  },
-                  { 
-                    title: 'Logo Creation', 
-                    desc: 'Bespoke visual identities, premium brand marks, and comprehensive design systems.', 
-                    icon: <PenTool className="w-6 h-6" />,
-                    image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800'
-                  },
-                  { 
-                    title: 'Music Production', 
-                    desc: 'Original audio engineering, custom soundscapes, and professional mixing/mastering.', 
-                    icon: <Music className="w-6 h-6" />,
-                    image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=800'
-                  },
-                  { 
-                    title: 'Video & Photo Editing', 
-                    desc: 'Cinematic visual treatments, color grading, and professional post-production editing.', 
-                    icon: <Camera className="w-6 h-6" />,
-                    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=800'
-                  }
-                ].map((service, idx) => (
-                  <div key={idx} className="bg-white rounded-3xl border border-solid border-[#D4AF37]/20 shadow-lg hover:shadow-2xl transition-all duration-300 group overflow-hidden flex flex-col h-full">
-                    <div className="relative aspect-video overflow-hidden">
+                {servicesData.map((service) => (
+                  <button
+                    key={service.id}
+                    onClick={() => {
+                      setSelectedService(service.id);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="text-left bg-white rounded-3xl border border-solid border-[#D4AF37]/20 shadow-lg hover:shadow-2xl hover:border-[#D4AF37] transition-all duration-300 group overflow-hidden flex flex-col h-full cursor-pointer active:scale-[0.98]"
+                  >
+                    <div className="relative aspect-video w-full overflow-hidden">
                       <img 
                         src={service.image} 
                         alt={service.title} 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         referrerPolicy="no-referrer"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
                       <div className="absolute -bottom-5 left-6 w-10 h-10 bg-[#F5F1EA] text-[#D4AF37] flex items-center justify-center rounded-xl border border-solid border-[#D4AF37]/30 shadow-md group-hover:scale-110 transition-transform">
-                        {service.icon}
+                        {getServiceIcon(service.id)}
                       </div>
                     </div>
                     <div className="p-6 pt-8 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h3 className="font-playfair font-bold text-base text-[#B89B5E] mb-2">{service.title}</h3>
-                        <p className="text-[11px] text-black leading-relaxed">
+                      <div className="space-y-2">
+                        <h3 className="font-playfair font-extrabold text-sm text-[#B89B5E] group-hover:text-[#D4AF37] transition-colors">{service.title}</h3>
+                        <p className="text-[11px] text-gray-700 leading-relaxed font-medium">
                           {service.desc}
                         </p>
                       </div>
+                      <div className="pt-4 flex items-center justify-between border-t border-solid border-gray-50 mt-4 w-full">
+                        <span className="text-[9px] font-bold text-[#B89B5E] tracking-widest uppercase">{service.price}</span>
+                        <span className="text-[9px] font-bold text-gray-400 group-hover:text-black transition-colors uppercase tracking-widest flex items-center gap-1">
+                          Learn More <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  </button>
+                ))}</div>
             </div>
           </FadeIn>
         </section>
@@ -491,10 +660,10 @@ export default function App() {
                     <div className="space-y-1.5">
                       <label htmlFor="form-budget" className="font-semibold">Valuation Budget Tier</label>
                       <select id="form-budget" value={contactForm.budget} onChange={e => setContactForm({ ...contactForm, budget: e.target.value })} className="w-full p-3 rounded-xl bg-white border border-solid border-[#D4AF37]/30 text-black focus:outline-none focus:border-[#D4AF37] text-xs" >
-                        <option value="$2,500 - $5,000" className="text-black">$2,500 - $5,000 (Minimalist showcase)</option>
-                        <option value="$5,000 - $10,000" className="text-black">$5,000 - $10,000 (Bespot Business portal)</option>
-                        <option value="$10,000 - $15,000" className="text-black">$10,000 - $15,000 (Heads e-commerce engine)</option>
-                        <option value="$15,000 - $25,000" className="text-black">$15,000 - $25,000 (Enterprise dynamic software)</option>
+                        <option value="₹2,00,000 - ₹4,00,000" className="text-black">₹2,00,000 - ₹4,00,000 (Minimalist showcase)</option>
+                        <option value="₹4,00,000 - ₹8,00,000" className="text-black">₹4,00,000 - ₹8,00,000 (Bespoke Business portal)</option>
+                        <option value="₹8,00,000 - ₹12,00,000" className="text-black">₹8,00,000 - ₹12,00,000 (Heads e-commerce engine)</option>
+                        <option value="₹12,00,000 - ₹20,00,000" className="text-black">₹12,00,000 - ₹20,00,000 (Enterprise dynamic software)</option>
                       </select>
                     </div>
                     <div className="space-y-1.5">
@@ -581,8 +750,11 @@ export default function App() {
           </FadeIn>
         </section>
         </div>
-      </div>
-      )}
+      
+      </>
+    )}
+  </div>
+)}
 
  {/* VIEW: THANK YOU PAGE */}
  {view === 'thankyou' && (
