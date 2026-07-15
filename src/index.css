@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #F5F1EA;
+  --color-gold: #D4AF37;
+  --color-gold-dark: #B89B5E;
+  --color-charcoal: #1A1A1A;
+  --color-obsidian: #0F0F0D;
+  
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-sora: "Sora", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-manrope: "Manrope", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-playfair);
+  }
+  
+  /* Custom scrollbar to look extremely minimal and elegant */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(184, 155, 94, 0.3);
+    border-radius: 999px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.6);
+  }
+}
+
+/* Luxury Card and Background Classes */
+.bg-cream-gradient {
+  background: radial-gradient(circle at 10% 20%, rgba(253, 252, 249, 1) 0%, rgba(245, 241, 234, 1) 90%);
+}
+
+.bg-dark-gold-gradient {
+  background: linear-gradient(135deg, #1A1A1A 0%, #0F0F0D 100%);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #B89B5E 50%, #8A6F3E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-gold-glow {
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 30px rgba(212, 175, 55, 0.03);
+}
+
+.border-gold-glow:hover {
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  box-shadow: 0 10px 40px rgba(212, 175, 55, 0.08);
+}
+
+/* Glassmorphism card for luxury widgets */
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-card-dark {
+  background: rgba(15, 15, 13, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+/* Custom animation effects */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-luxury-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float-reverse {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(10px) rotate(-1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-luxury-float-reverse {
+  animation: float-reverse 7s ease-in-out infinite;
+}
+
+/* Shimmer animation for buttons */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-btn {
+  background: linear-gradient(90deg, #D4AF37, #F5F1EA, #D4AF37);
+  background-size: 200% 100%;
+  animation: shimmer 4s infinite linear;
+}
