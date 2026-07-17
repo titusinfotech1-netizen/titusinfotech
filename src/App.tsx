@@ -14,6 +14,8 @@ import { servicesData, ServiceDetail } from './data/servicesData';
 // Custom Subcomponents
 import AdminDashboard from './components/AdminDashboard';
 import { FadeIn } from './components/FadeIn';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsAndConditions from './components/TermsAndConditions';
 // @ts-ignore
 import titusLogo from './assets/images/titus_logo_1784128112710.jpg';
 // @ts-ignore
@@ -21,7 +23,7 @@ import whatsappLogo from './assets/images/whatsapp_logo_1784133431023.jpg';
 
 export default function App() {
  const [isDarkMode, setIsDarkMode] = useState(false);
- const [view, setView] = useState<'contact' | 'thankyou'>('contact');
+ const [view, setView] = useState<'contact' | 'thankyou' | 'privacy' | 'terms'>('contact');
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const handleServiceConsultation = (serviceTitle: string) => {
@@ -820,6 +822,14 @@ export default function App() {
  </div>
  )}
 
+ {view === 'privacy' && (
+   <PrivacyPolicy onBack={() => navigateTo('contact')} />
+ )}
+
+ {view === 'terms' && (
+   <TermsAndConditions onBack={() => navigateTo('contact')} />
+ )}
+
  </main>
 
  {/* UNIVERSAL FOOTER */}
@@ -842,9 +852,25 @@ export default function App() {
         </div>
       </button>
       
-      <p className="text-[10px] text-black font-semibold tracking-wider uppercase">
-        © {new Date().getFullYear()} Titus Infotech. All Rights Reserved.
-      </p>
+      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+        <button 
+          onClick={() => navigateTo('privacy')}
+          className="text-[10px] text-black hover:text-[#B89B5E] font-bold tracking-wider uppercase transition-colors cursor-pointer"
+        >
+          Privacy Policy
+        </button>
+        <span className="hidden sm:inline text-[#D4AF37]/40">|</span>
+        <button 
+          onClick={() => navigateTo('terms')}
+          className="text-[10px] text-black hover:text-[#B89B5E] font-bold tracking-wider uppercase transition-colors cursor-pointer"
+        >
+          Terms & Conditions
+        </button>
+        <span className="hidden sm:inline text-[#D4AF37]/40">|</span>
+        <p className="text-[10px] text-black font-semibold tracking-wider uppercase">
+          © {new Date().getFullYear()} Titus Infotech. All Rights Reserved.
+        </p>
+      </div>
     </div>
   </footer>
 
